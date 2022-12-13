@@ -1,0 +1,29 @@
+title: Longevity drugs postagregator
+version: 0.1.0
+data_version: 0.1.0
+type: postaggregator
+name: just_drugs
+level: variant
+input_level: variant
+description: Drugs genetic specific postagregator for longevity report.
+requires:
+- dbsnp
+tags:
+- drugs
+- longevity
+output_columns:
+- name: col1
+  title: clo1
+  type: string
+  width: 1
+  filterable: false
+  hidden: true
+  desc: dummy column
+developer:
+  name: "Alex Karmazin"
+  organization: "Just-DNA_seq"
+  email: "karmazzinalex@gmail.com"
+  website: "https://github.com/dna-seq/opencravat-longevity"
+  citation: ""
+release_note:
+  0.1.0: first version
