@@ -1,5 +1,5 @@
 # just_drugs
-Drugs postagregator for longevity reporter in oakvar.
+Drugs postagregator for longevity reporter in oakvar. It is a part of [Oakvar-Longevity](https://github.com/dna-seq/oakvar-longevity) module.
 
 
 # Installation
