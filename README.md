@@ -18,5 +18,4 @@ ov module install https://github.com/dna-seq/just_drugs
 
 Create a folder with the name "just_drugs" in "postaggregators" folder of Oakvar and put inside all the files from this git repository.
 
-------------------
-You can join our discord if you want to discuss the project or if you encountered any issue: https://discord.gg/5WU6aSANXy
+You can join our [discord](https://discord.gg/5WU6aSANXy) if you want to discuss the project or if you encountered any issue.
