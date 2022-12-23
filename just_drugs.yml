@@ -8,6 +8,9 @@ input_level: variant
 description: Drugs genetic specific postagregator for longevity report.
 requires:
 - dbsnp
+input_columns:
+- dbsnp__rsid
+- base__alt_base
 tags:
 - drugs
 - longevity
