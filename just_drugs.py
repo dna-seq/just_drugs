@@ -19,10 +19,10 @@ class CravatPostAggregator (BasePostAggregator):
 
     def setup (self):
         with open(str(Path(__file__).parent) + "/data/annotation_tab.tsv") as f:
-            self.annotation_tab = {}
-            header = True
-            head = None
-            rsid_index = -1
+            self.annotation_tab:dict[str, list] = {}
+            header:bool = True
+            head:list[str] = None
+            rsid_index:int = -1
             for line in f:
                 if header:
                     head = line.split("\t")
@@ -30,16 +30,16 @@ class CravatPostAggregator (BasePostAggregator):
                     self.annotation_tab["header"] = head
                     header = False
                 else:
-                    parts = line.split("\t")
+                    parts:list[str] = line.split("\t")
                     self.annotation_tab[parts[rsid_index]] = parts
-            self.head_index_map = {}
+            self.head_index_map:dict[str, int] = {}
             for i, item in enumerate(head):
                 self.head_index_map[item] = i
 
-        self.result_path = Path(self.output_dir, self.run_name + "_longevity.sqlite")
-        self.longevity_conn = sqlite3.connect(self.result_path)
-        self.longevity_cursor = self.longevity_conn.cursor()
-        sql_create = """ CREATE TABLE IF NOT EXISTS drugs (
+        self.result_path:Path = Path(self.output_dir, self.run_name + "_longevity.sqlite")
+        self.longevity_conn:sqlite3.Connection = sqlite3.connect(self.result_path)
+        self.longevity_cursor:sqlite3.Cursor = self.longevity_conn.cursor()
+        sql_create:str = """ CREATE TABLE IF NOT EXISTS drugs (
             id integer NOT NULL PRIMARY KEY,
             rsid text,
             drugs text,
@@ -66,22 +66,22 @@ class CravatPostAggregator (BasePostAggregator):
 
         
     def annotate (self, input_data):
-        rsid = str(input_data['dbsnp__rsid'])
+        rsid:str = str(input_data['dbsnp__rsid'])
         if rsid == '':
             return
         if not rsid.startswith("rs"):
             rsid = 'rs' + rsid
-        item = self.annotation_tab.get(rsid)
+        item:list[str] = self.annotation_tab.get(rsid)
         if item is None:
             return
 
-        freq_in_case = item[self.head_index_map[FREQCASES_COL_NAME]]
-        effect = float(item[self.head_index_map[RATIOSTAT_COL_NAME]])
-        alt = input_data['base__alt_base']
+        freq_in_case:str = item[self.head_index_map[FREQCASES_COL_NAME]]
+        effect:float = float(item[self.head_index_map[RATIOSTAT_COL_NAME]])
+        alt:str = input_data['base__alt_base']
         if freq_in_case != alt:
             effect = round((1 / effect) * 1000) / 1000
 
-        sql = """ INSERT INTO drugs (
+        sql:str = """ INSERT INTO drugs (
             rsid,
             drugs,
             phencat,
@@ -93,7 +93,7 @@ class CravatPostAggregator (BasePostAggregator):
             effect  
         ) VALUES (?,?,?,?,?,?,?,?,?) """
 
-        task = (rsid, item[self.head_index_map[DRUGS_COL_NAME]], item[self.head_index_map[PHENCAT_COL_NAME]],
+        task:tuple = (rsid, item[self.head_index_map[DRUGS_COL_NAME]], item[self.head_index_map[PHENCAT_COL_NAME]],
                 item[self.head_index_map[SIGNIFICANCE_COL_NAME]], item[self.head_index_map[SENTENCE_COL_NAME]],
                 freq_in_case, item[self.head_index_map[FREQCONTROLS_COL_NAME]],
                 item[self.head_index_map[TYPE_COL_NAME]], str(effect))
