@@ -99,4 +99,3 @@ class CravatPostAggregator (BasePostAggregator):
                 item[self.head_index_map[TYPE_COL_NAME]], str(effect))
 
         self.longevity_cursor.execute(sql, task)
-        return {"col1":""}
